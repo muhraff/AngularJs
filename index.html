@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8"/>
+		<title>AngularJS - Quick Tips</title>
+
+		<link href="http://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet" />
+
+		<!-- The main CSS file -->
+		<link href="style.css" rel="stylesheet" />
+
+		<!--[if lt IE 9]>
+			<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+		<![endif]-->
+	</head>
+
+	<!-- Notice the controller directive -->
+	<body ng-app="angtip">
+<div ng-controller="InlineEditorController">
+	<div id="main" ng-click="hideTooltip()">
+
+			<!-- This is the tooltip. It is shown only when the showtooltip variable is truthful -->
+			<div class="tooltip" ng-click="$event.stopPropagation()" ng-show="showtooltip">
+
+				<!-- ng-model binds the contents of the text field with the "value" model.
+					 Any changes to the text field will automatically update the value, and
+					 all other bindings on the page that depend on it.  -->
+
+				<input type="text" ng-model="value" />
+			</div>
+
+			<!-- Call a method defined in the InlineEditorController that toggles
+			 the showtooltip varaible -->
+			<p ng-click="toggleTooltip($event)">{{value}}</p>
+<!-- When this element is clicked, hide the tooltip -->
+		</div>
+	
+</div>
+	<div class="searchfor" ng-controller="InstantSearchController">
+		<div class="bar">
+			<!-- Create a binding between the searchString model and the text field -->
+			<input type="text" ng-model="searchString" placeholder="Enter your search terms" />
+		</div>
+
+		<ul>
+			<!-- Render a li element for every entry in the items array. Notice
+				 the custom search filter "searchFor". It takes the value of the
+				 searchString model as an argument.
+			 -->
+			<li ng-repeat="i in items | searchFor:searchString">
+				<a href="{{i.url}}"><img ng-src="{{i.image}}" /></a>
+				<p>{{i.title}}</p>
+			</li>
+		</ul>
+		
+	</div>
+		
+		
+<div class="navManu">
+		<!-- The navigation menu will get the value of the "active" variable as a class.
+			 The $event.preventDefault() stops the page from jumping when a link is clicked. -->
+
+		<nav class="{{active}}" ng-click="$event.preventDefault()">
+
+			<!-- When a link in the menu is clicked, we set the active variable -->
+
+			<a href="#" class="home" ng-click="active='home'">Home</a>
+			<a href="#" class="projects" ng-click="active='projects'">Projects</a>
+			<a href="#" class="services" ng-click="active='services'">Services</a>
+			<a href="#" class="contact" ng-click="active='contact'">Contact</a>
+		</nav>
+
+		<!-- ng-show will show an element if the value in the quotes is truthful,
+			 while ng-hide does the opposite. Because the active variable is not set
+			 initially, this will cause the first paragraph to be visible. -->
+
+		<p ng-hide="active">Please click a menu item</p>
+		<p ng-show="active">You chose <b>{{active}}</b></p>
+</div>
+	
+	<div class="orderFormController" ng-controller="OrderFormController">
+		<form>
+
+			<h1>Services</h1>
+
+			<ul>
+				<!-- Loop through the services array, assign a click handler, and set or
+					remove the "active" css class if needed -->
+				<li ng-repeat="service in services" ng-click="toggleActive(service)" ng-class="{active:service.active}">
+					<!-- Notice the use of the currency filter, it will format the price -->
+					{{service.name}} <span>{{service.price | currency}}</span>
+				</li>
+			</ul>
+
+			<div class="total">
+				<!-- Calculate the total price of all chosen services. Format it as currency. -->
+				Total: <span>{{total() | currency}}</span>
+			</div>
+
+		</form>
+</div>
+	<div class="switchableGrid" ng-controller="SwitchableGridController">
+		<div class="bar">
+
+			<!-- These two buttons switch the layout varaible,
+				 which causes the correct UL to be shown. -->
+
+			<a href="#" class="list-icon" ng-class="{active: layout == 'list'}" ng-click="layout = 'list'"></a>
+			<a href="#" class="grid-icon" ng-class="{active: layout == 'grid'}" ng-click="layout = 'grid'"></a>
+		</div>
+
+		<!-- We have two layouts. We choose which one to show depending on the "layout" binding -->
+
+		<ul ng-show="layout == 'grid'" class="grid">
+			<!-- A view with big photos and no text -->
+			<li ng-repeat="p in pics">
+				<a href="{{p.link}}" target="_blank"><img ng-src="{{p.images.low_resolution.url}}" /></a>
+			</li>
+		</ul>
+
+		<ul ng-show="layout == 'list'" class="list">
+			<!-- A compact view smaller photos and titles -->
+			<li ng-repeat="p in pics">
+				<a href="{{p.link}}" target="_blank"><img ng-src="{{p.images.thumbnail.url}}" /></a>
+				<p>{{p.caption.text}}</p>
+			</li>
+		</ul>
+</div>
+		<!-- Include AngularJS from Google's CDN -->
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
+		<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular-resource.min.js"></script>
+		<script src="script.js"></script>
+		<script src="app.js"></script>
+		<script src="filter/searchFor.js"></script>
+		<script src="factory/instagram.js"></script>
+		<script src="controller/searchForCtrl.js"></script>
+		<script src="controller/orderFormController.js"></script>
+		<script src="controller/switchableGridController.js"></script>
+		
+	</body>
+</html>
