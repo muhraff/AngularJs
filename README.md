@@ -1,7 +1,7 @@
 # AngularJs
 Help &amp; Tips in angularjs framework . Angular v1.5
 
-What is AngularJS?
+# AngularJS With some Examples
 
 On a high level, AngularJS is a framework that binds your HTML (views) to JavaScript objects (models). When your models change, the page updates automatically. The opposite is also true – a model, associated with a text field, is updated when the content of the field is changed. Angular handles all the glue code, so you don’t have to update HTML manually or listen for events, like you do with jQuery. As a matter of fact, none of the examples here even include jQuery!
 
